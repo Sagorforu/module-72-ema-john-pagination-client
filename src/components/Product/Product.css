@@ -1,6 +1,6 @@
 .product {
     width: 300px;
-    height: 510px;
+    height: 580px;
     border: 1px solid #95A0A7;
     border-radius: 8px;
     position: relative;
@@ -32,6 +32,7 @@
 }
 .btn-cart{
     width: 100%;
+    color: black;
     background: #FFE0B3;
     border: 1px solid #95A0A7;
     border-radius: 0px 0px 8px 8px;
