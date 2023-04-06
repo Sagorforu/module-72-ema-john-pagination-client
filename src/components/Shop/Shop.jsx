@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { addToDb, getShoppingCart } from '../../utilities/fakedb';
+import { addToDb, deleteShoppingCart, getShoppingCart } from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -13,11 +16,11 @@ const Shop = () => {
             .then(data => setProducts(data))
     }, []);
 
-    useEffect( () =>{
+    useEffect(() => {
         const storedCart = getShoppingCart();
         const savedCart = [];
         // step 1: get id 
-        for(const id in storedCart){
+        for (const id in storedCart) {
             // console.log(id)
             // step 2: get the product by using id
             const addedProduct = products.find(product => product.id === id);
@@ -32,13 +35,17 @@ const Shop = () => {
         }
         // step 5: set the cart
         setCart(savedCart)
-    },[products])
+    }, [products])
 
     const handleAddToCart = (product) => {
         // cart.push(product); 
         const newCart = [...cart, product];
         setCart(newCart);
         addToDb(product.id)
+    }
+    const handleClearCart = () => {
+        setCart([]);
+        deleteShoppingCart();
     }
 
     return (
@@ -53,7 +60,14 @@ const Shop = () => {
                 }
             </div>
             <div className="cart-container">
-                <Cart cart={cart}></Cart>
+                <Cart
+                    handleClearCart={handleClearCart}
+                    cart={cart}
+                >
+                    <Link className='proceed-link' to='/orders'>
+                        <button className='btn-proceed'><span>Review Orders</span> <FontAwesomeIcon icon={faArrowRight}/></button>
+                    </Link>
+                </Cart>
             </div>
         </div>
     );
